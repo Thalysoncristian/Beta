@@ -78,6 +78,62 @@ function removerGabinete(numero) {
 
 // Função para gerar o relatório
 function gerarRelatorio() {
+    const form = document.getElementById('relatorioForm');
+    
+    // Verifica se o formulário é válido
+    if (form.checkValidity() === false) {
+        // Caso não seja válido, exibe as mensagens de erro
+        form.reportValidity();
+        return; // Interrompe a execução da função
+    }
+
+    const relatorio = {
+        site: document.getElementById('site').value.toUpperCase(),
+        ami: document.getElementById('ami').value.toUpperCase(),
+        tecnico: document.getElementById('tecnico').value.toUpperCase(),
+        supervisor: document.getElementById('supervisor').value.toUpperCase(),
+        coordenador: document.getElementById('coordenador').value.toUpperCase(),
+        dataAcionamento: document.getElementById('dataAcionamento').value,
+        dataDeslocamento: document.getElementById('dataDeslocamento').value,
+        dataEntradaSite: document.getElementById('dataEntradaSite').value,
+        dataSaidaSite: document.getElementById('dataSaidaSite').value,
+        quemAcionou: document.getElementById('quemAcionou').value.toUpperCase(),
+        cadeado: document.getElementById('cadeado').value.toUpperCase(),
+        modeloCadeado: document.getElementById('modeloCadeado').value.toUpperCase(),
+        vandalizado: document.getElementById('vandalizado').value.toUpperCase(),
+        siteGPON: document.getElementById('siteGPON').value.toUpperCase(),
+        zeladoria: document.getElementById('zeladoria').value.toUpperCase(),
+        estadoPortas: document.getElementById('estadoPortas').value.toUpperCase(),
+        portaGabinete: document.getElementById('portaGabinete').value.toUpperCase(),
+        posteInterno: document.getElementById('posteInterno').value.toUpperCase(),
+        iluminacao: document.getElementById('iluminacao').value.toUpperCase(),
+        falhaAtividade: document.getElementById('falhaAtividade').value.toUpperCase(),
+        causaEncontrada: document.getElementById('causaEncontrada').value.toUpperCase(),
+        acaoRealizada: document.getElementById('acaoRealizada').value.toUpperCase(),
+        pendencias: document.getElementById('pendencias').value.toUpperCase(),
+        amiPendencia: document.getElementById('amiPendencia').value.toUpperCase(),
+        testadoCom: document.getElementById('testadoCom').value.toUpperCase(),
+        obs: document.getElementById('obs').value.toUpperCase(),
+    };
+
+    // Enviar os dados para o backend (substitua 'BACKEND_URL' pela URL correta do backend)
+    fetch('BACKEND_URL', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(relatorio),
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert('Relatório salvo com sucesso!');
+    })
+    .catch((error) => {
+        alert('Erro ao salvar relatório: ' + error.message);
+    });
+}
+
+function gerarRelatorio() {
     const relatorio = {
         site: document.getElementById('site').value.toUpperCase(),
         ami: document.getElementById('ami').value.toUpperCase(),
