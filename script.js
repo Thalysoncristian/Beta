@@ -1,3 +1,7 @@
+// Inicializa Parse
+Parse.initialize("APPLICATION_ID", "JAVASCRIPT_KEY"); // Substitua pelos seus valores
+Parse.serverURL = 'https://parseapi.back4app.com/';
+
 // Função para adicionar mais gabinetes
 function adicionarGabinete() {
     const gabinetesContainer = document.getElementById('gabinetesContainer');
@@ -116,118 +120,14 @@ function gerarRelatorio() {
         obs: document.getElementById('obs').value.toUpperCase(),
     };
 
-    // Enviar os dados para o backend (substitua 'BACKEND_URL' pela URL correta do backend)
-    fetch('BACKEND_URL', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(relatorio),
-    })
-    .then(response => response.json())
-    .then(data => {
-        alert('Relatório salvo com sucesso!');
-    })
-    .catch((error) => {
-        alert('Erro ao salvar relatório: ' + error.message);
-    });
-}
-
-function gerarRelatorio() {
-    const relatorio = {
-        site: document.getElementById('site').value.toUpperCase(),
-        ami: document.getElementById('ami').value.toUpperCase(),
-        tecnico: document.getElementById('tecnico').value.toUpperCase(),
-        supervisor: document.getElementById('supervisor').value.toUpperCase(),
-        coordenador: document.getElementById('coordenador').value.toUpperCase(),
-        dataAcionamento: document.getElementById('dataAcionamento').value,
-        dataDeslocamento: document.getElementById('dataDeslocamento').value,
-        dataEntradaSite: document.getElementById('dataEntradaSite').value,
-        dataSaidaSite: document.getElementById('dataSaidaSite').value,
-        quemAcionou: document.getElementById('quemAcionou').value.toUpperCase(),
-        cadeado: document.getElementById('cadeado').value.toUpperCase(),
-        modeloCadeado: document.getElementById('modeloCadeado').value.toUpperCase(),
-        vandalizado: document.getElementById('vandalizado').value.toUpperCase(),
-        siteGPON: document.getElementById('siteGPON').value.toUpperCase(),
-        zeladoria: document.getElementById('zeladoria').value.toUpperCase(),
-        estadoPortas: document.getElementById('estadoPortas').value.toUpperCase(),
-        portaGabinete: document.getElementById('portaGabinete').value.toUpperCase(),
-        posteInterno: document.getElementById('posteInterno').value.toUpperCase(),
-        iluminacao: document.getElementById('iluminacao').value.toUpperCase(),
-        falhaAtividade: document.getElementById('falhaAtividade').value.toUpperCase(),
-        causaEncontrada: document.getElementById('causaEncontrada').value.toUpperCase(),
-        acaoRealizada: document.getElementById('acaoRealizada').value.toUpperCase(),
-        pendencias: document.getElementById('pendencias').value.toUpperCase(),
-        amiPendencia: document.getElementById('amiPendencia').value.toUpperCase(),
-        testadoCom: document.getElementById('testadoCom').value.toUpperCase(),
-        obs: document.getElementById('obs').value.toUpperCase(),
-        gabinetes: []
-    };
-
-    const gabinetes = document.getElementsByClassName('gabinete');
-    for (let i = 0; i < gabinetes.length; i++) {
-        const gabinete = {
-            tipo: document.getElementById(`gabinete${i + 1}`).value.toUpperCase(),
-            retificadores: document.getElementById(`retificadores${i + 1}`).value,
-            baterias: document.getElementById(`baterias${i + 1}`).value,
-            siteBateria: document.getElementById(`siteBateria${i + 1}`).value.toUpperCase(),
-            semAutonomia: document.getElementById(`semAutonomia${i + 1}`).checked ? 'SIM' : 'NÃO',
-            infoBateria: document.getElementById(`infoBateria${i + 1}`).value.toUpperCase(),
-            quantidadeBancos: document.getElementById(`quantidadeBancos${i + 1}`).value,
-            capacidade: document.getElementById(`capacidade${i + 1}`).value.toUpperCase(),
-            volts: document.getElementById(`volts${i + 1}`).value.toUpperCase(),
-            elemento: document.getElementById(`elemento${i + 1}`).value.toUpperCase(),
-            consumoFonte: document.getElementById(`consumoFonte${i + 1}`).value.toUpperCase()
-        };
-        relatorio.gabinetes.push(gabinete);
-    }
-
-    let resultado = `
-*SITE:* ${relatorio.site}
-*AMI:* ${relatorio.ami}
-*NOME DO TÉCNICO:* ${relatorio.tecnico}
-*NOME DO SUPERVISOR:* ${relatorio.supervisor}
-*COORDENADOR:* ${relatorio.coordenador}
-*DATA ACIONAMENTO:* ${relatorio.dataAcionamento}
-*DATA HORA DESLOCAMENTO:* ${relatorio.dataDeslocamento}
-*DATA HORA ENTRADA SITE:* ${relatorio.dataEntradaSite}
-*DATA HORA SAÍDA SITE:* ${relatorio.dataSaidaSite}
-*QUEM ACIONOU:* ${relatorio.quemAcionou}
-*SITE POSSUI CADEADO:* ${relatorio.cadeado}
-*MODELO DO CADEADO:* ${relatorio.modeloCadeado}
-*SITE VANDALIZADO:* ${relatorio.vandalizado}`;
-
-    relatorio.gabinetes.forEach((gabinete, index) => {
-        resultado += `
-*INFORMAR GABINETE - ${index + 1}:* ${gabinete.tipo}
-*QUANTIDADE DE RETIFICADORES POR GABINETE-FCC:* ${gabinete.retificadores}
-*QUANTIDADE DE BATERIAS NO GABINETE-FCC:* ${gabinete.baterias}
-*SITE COM BATERIA:* ${gabinete.siteBateria}
-*SEM AUTONOMIA:* ${gabinete.semAutonomia}
-*INFORMAÇÕES DA BATERIA:* ${gabinete.infoBateria}
-*QUANTIDADE DE BANCOS:* ${gabinete.quantidadeBancos}
-*CAPACIDADE:* ${gabinete.capacidade}
-*VOLTS:* ${gabinete.volts}
-*ELEMENTO:* ${gabinete.elemento}
-*CONSUMO FONTE:* ${gabinete.consumoFonte}`;
-    });
-
-    resultado += `
-*SITE POSSUI REDE GPON:* ${relatorio.siteGPON}
-*NECESSÁRIO ZELADORIA:* ${relatorio.zeladoria}
-*ESTADO DAS PORTAS DOS GABINETES:* ${relatorio.estadoPortas}
-*INFORMAR A PORTA DE QUAL GABINETE:* ${relatorio.portaGabinete}
-*EXISTÊNCIA POSTE INTERNO:* ${relatorio.posteInterno}
-*EXISTÊNCIA ILUMINAÇÃO INTERNA-EXTERNA:* ${relatorio.iluminacao}
-*FALHA DA ATIVIDADE:* ${relatorio.falhaAtividade}
-*CAUSA ENCONTRADA:* ${relatorio.causaEncontrada}
-*AÇÃO REALIZADA:* ${relatorio.acaoRealizada}
-*PENDÊNCIAS:* ${relatorio.pendencias}
-*AMI DA PENDENCIA:* ${relatorio.amiPendencia}
-*TESTADO COM:* ${relatorio.testadoCom}
-*OBS:* ${relatorio.obs}`;
-
-    document.getElementById('resultado').textContent = resultado;
+    // Enviar os dados para o backend
+    Parse.Cloud.run("saveRelatorio", relatorio)
+        .then((result) => {
+            alert(result);
+        })
+        .catch((error) => {
+            alert("Erro ao salvar relatório: " + error.message);
+        });
 }
 
 // Função para copiar o relatório para a área de transferência
@@ -266,6 +166,3 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (document.getElementById('vandalizado').value === 'NAO') {
-        vandalizadoDetails.classList.add('hidden');
-    }
-});
